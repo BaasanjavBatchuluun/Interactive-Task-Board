@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Flow - Internship Assessment</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <h1>Task Flow Board</h1>
+      <p>Organise and track your project tasks efficiently.</p>
+    </header>
+
+    <!-- Controls & Creation Section -->
+    <section class="controls-section">
+      <form id="task-form" class="task-form">
+        <input type="text" id="task-title" placeholder="Task title..." required />
+        <select id="task-category" required>
+          <option value="" disabled selected>Select Category</option>
+          <option value="Development">Development</option>
+          <option value="Design">Design</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+        <select id="task-priority" required>
+          <option value="" disabled selected>Select Priority</option>
+          <option value="Low">Low Priority</option>
+          <option value="Medium">Medium Priority</option>
+          <option value="High">High Priority</option>
+        </select>
+        <button type="submit" class="btn btn-primary">Add Task</button>
+      </form>
+
+      <div class="filter-bar">
+        <input type="text" id="search-input" placeholder="Search tasks..." />
+        <select id="category-filter">
+          <option value="All">All Categories</option>
+          <option value="Development">Development</option>
+          <option value="Design">Design</option>
+          <option value="Marketing">Marketing</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Kanban Columns -->
+    <main class="board-container">
+      <div class="column" data-status="todo">
+        <div class="column-header">
+          <h2>To Do</h2>
+          <span class="task-count" id="count-todo">0</span>
+        </div>
+        <div class="task-list" id="list-todo"></div>
+      </div>
+
+      <div class="column" data-status="in-progress">
+        <div class="column-header">
+          <h2>In Progress</h2>
+          <span class="task-count" id="count-in-progress">0</span>
+        </div>
+        <div class="task-list" id="list-in-progress"></div>
+      </div>
+
+      <div class="column" data-status="completed">
+        <div class="column-header">
+          <h2>Completed</h2>
+          <span class="task-count" id="count-completed">0</span>
+        </div>
+        <div class="task-list" id="list-completed"></div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
