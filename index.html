@@ -1,75 +1,111 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Task Flow - Internship Assessment</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanban Lite — Interactive Task Board</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app-container">
-    <header class="app-header">
-      <h1>Task Flow Board</h1>
-      <p>Organise and track your project tasks efficiently.</p>
-    </header>
 
-    <!-- Controls & Creation Section -->
-    <section class="controls-section">
-      <form id="task-form" class="task-form">
-        <input type="text" id="task-title" placeholder="Task title..." required />
-        <select id="task-category" required>
-          <option value="" disabled selected>Select Category</option>
-          <option value="Development">Development</option>
-          <option value="Design">Design</option>
-          <option value="Marketing">Marketing</option>
-        </select>
-        <select id="task-priority" required>
-          <option value="" disabled selected>Select Priority</option>
-          <option value="Low">Low Priority</option>
-          <option value="Medium">Medium Priority</option>
-          <option value="High">High Priority</option>
-        </select>
-        <button type="submit" class="btn btn-primary">Add Task</button>
-      </form>
+  <header class="app-header">
+    <div class="app-header__title">
+      <h1>Kanban Lite</h1>
+      <p class="tagline">Plan it. Move it. Finish it.</p>
+    </div>
 
-      <div class="filter-bar">
-        <input type="text" id="search-input" placeholder="Search tasks..." />
-        <select id="category-filter">
-          <option value="All">All Categories</option>
-          <option value="Development">Development</option>
-          <option value="Design">Design</option>
-          <option value="Marketing">Marketing</option>
-        </select>
+    <div class="app-header__actions">
+      <div class="counter" aria-live="polite">
+        <span class="counter__item"><strong id="activeCount">0</strong> active</span>
+        <span class="counter__divider"></span>
+        <span class="counter__item"><strong id="completedCount">0</strong> completed</span>
       </div>
+      <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="panel" aria-labelledby="addTaskHeading">
+      <h2 id="addTaskHeading">Add a task</h2>
+      <form id="taskForm" class="task-form" autocomplete="off">
+        <div class="field field--wide">
+          <label for="taskTitle">Title</label>
+          <input id="taskTitle" type="text" maxlength="80" placeholder="e.g. Design the landing page" required>
+        </div>
+
+        <div class="field field--wide">
+          <label for="taskDescription">Description</label>
+          <textarea id="taskDescription" rows="2" maxlength="240" placeholder="Optional details..."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="taskCategory">Category</label>
+          <select id="taskCategory">
+            <option value="Development">Development</option>
+            <option value="Design">Design</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskPriority">Priority</label>
+          <select id="taskPriority">
+            <option value="low">Low</option>
+            <option value="medium" selected>Medium</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn--primary">+ Add Task</button>
+      </form>
     </section>
 
-    <!-- Kanban Columns -->
-    <main class="board-container">
+    <section class="toolbar" aria-label="Search and filter tasks">
+      <input id="searchInput" type="search" placeholder="🔍 Search tasks by title...">
+      <select id="categoryFilter" aria-label="Filter by category">
+        <option value="all">All categories</option>
+        <option value="Development">Development</option>
+        <option value="Design">Design</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Other">Other</option>
+      </select>
+      <button id="clearCompleted" class="btn btn--ghost" type="button">Clear completed</button>
+    </section>
+
+    <section class="board" aria-label="Task board">
+
       <div class="column" data-status="todo">
-        <div class="column-header">
-          <h2>To Do</h2>
-          <span class="task-count" id="count-todo">0</span>
-        </div>
-        <div class="task-list" id="list-todo"></div>
+        <header class="column__header">
+          <h2><span class="dot dot--todo"></span> To Do</h2>
+          <span class="column__count" id="count-todo">0</span>
+        </header>
+        <div class="column__list" id="list-todo"></div>
       </div>
 
-      <div class="column" data-status="in-progress">
-        <div class="column-header">
-          <h2>In Progress</h2>
-          <span class="task-count" id="count-in-progress">0</span>
-        </div>
-        <div class="task-list" id="list-in-progress"></div>
+      <div class="column" data-status="inprogress">
+        <header class="column__header">
+          <h2><span class="dot dot--progress"></span> In Progress</h2>
+          <span class="column__count" id="count-inprogress">0</span>
+        </header>
+        <div class="column__list" id="list-inprogress"></div>
       </div>
 
       <div class="column" data-status="completed">
-        <div class="column-header">
-          <h2>Completed</h2>
-          <span class="task-count" id="count-completed">0</span>
-        </div>
-        <div class="task-list" id="list-completed"></div>
+        <header class="column__header">
+          <h2><span class="dot dot--done"></span> Completed</h2>
+          <span class="column__count" id="count-completed">0</span>
+        </header>
+        <div class="column__list" id="list-completed"></div>
       </div>
-    </main>
-  </div>
+
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Tip: drag cards between columns, or use the arrow buttons on touch screens.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
